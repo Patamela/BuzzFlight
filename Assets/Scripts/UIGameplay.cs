@@ -1,13 +1,18 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIGameplay : MonoBehaviour
 {   
 
+    [Header("UI Settings")]
+    [SerializeField] private InputAction pause;
+
     [Header("UI")]
+    [SerializeField] private int levelId;
     [SerializeField] private List<GameObject> hearts;
     [SerializeField] private Image[] ammunition;
     [SerializeField] private TextMeshProUGUI timeDash;
@@ -23,11 +28,24 @@ public class UIGameplay : MonoBehaviour
     [Header("Sprites")]
     [SerializeField] private Sprite imageAmmoEmpty;
     [SerializeField] private Sprite imageAmmoFull;
+    
+    bool isPaused;
+
+    void OnEnable()
+    {
+        pause.Enable();
+    }
+
+    void OnDisable()
+    {
+        pause.Disable();
+    }
 
     void Start()
     {
         DrawHearts();
         DrawAmmunition();
+        UpdateScore();
     }
 
     void Update()
@@ -35,6 +53,19 @@ public class UIGameplay : MonoBehaviour
         DrawHearts();
         DrawAmmunition();
         UpdateDash();
+        TogglePause();
+        UpdateScore();
+    }
+
+    void TogglePause()
+    {
+        if (pause.WasPressedThisFrame())
+        {
+            isPaused = !isPaused;
+            panelPause.SetActive(isPaused);
+
+            Time.timeScale = isPaused ? 0 : 1f;
+        }
     }
 
     void DrawHearts()
@@ -56,20 +87,27 @@ public class UIGameplay : MonoBehaviour
 
     void UpdateDash()
     {
-        Debug.Log(playerMovement.CoolDownTimer.ToString());
         timeDash.text = playerMovement.CoolDownTimer.ToString("0s");
         if(playerMovement.CoolDownTimer <= 0) dashIcon.color = new Color(dashIcon.color.r, dashIcon.color.g, dashIcon.color.b, 1f);
         else dashIcon.color = new Color(dashIcon.color.r, dashIcon.color.g, dashIcon.color.b, 0.50f);
     }
     
-    public void Continue()
+    void UpdateScore()
+    {   
+        int score = PlayerPrefs.GetInt("MaxScore");
+        textScore.text = score.ToString("000000 pollen");
+    }
+
+    public void Resume()
     {
         panelPause.SetActive(false);
+        isPaused = false;
+        Time.timeScale = 1f;
     }
 
     public void Settings()
-    {
-        SceneManager.LoadScene("Settings");
+    {   
+        SceneManager.LoadScene("Settings", LoadSceneMode.Additive);
     }
 
     public void SaveExit()

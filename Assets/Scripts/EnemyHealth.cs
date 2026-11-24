@@ -1,20 +1,18 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
     
+    [SerializeField] private ParticleSystem enemyParticles;
+
     private int maxHealth;
     private int currentHealth;
 
     public void InitializeHealth(int health)
     {
         maxHealth = health;
-    }
-
-    private void OnEnable()
-    {
-        // Initialize the current health from the ScriptableObject data
         currentHealth = maxHealth;
     }
 
@@ -24,12 +22,14 @@ public class EnemyHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            Die();
+            StartCoroutine(Die());
         }
     }
 
-    private void Die()
+    private IEnumerator Die()
     {
+        enemyParticles.Play();
+        yield return new WaitForSeconds(0.5f);
         gameObject.SetActive(false);
     }
 }

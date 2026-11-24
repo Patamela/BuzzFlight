@@ -25,6 +25,7 @@ public class PlayerShooting : MonoBehaviour
     public int CurrentAmmo
     {
         get => currentAmmo;
+        set => currentAmmo = value;
     }
 
     void Start()

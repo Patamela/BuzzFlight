@@ -21,9 +21,9 @@ public class EnemyManager : MonoBehaviour
         enemyHealth.InitializeHealth(enemyData.Health);
     }
 
-    public void TakeDamage()
+    public void TakeDamage(int damage = 1)
     {
-        enemyHealth.LoseHealth();
+        enemyHealth.LoseHealth(damage);
     }
 
     public int GetDamage()

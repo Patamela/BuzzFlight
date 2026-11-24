@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UISettings : MonoBehaviour
@@ -11,9 +12,12 @@ public class UISettings : MonoBehaviour
     [SerializeField] private Slider sliderEfectos;
 
     [Header("Percetange Texts")]
-    [SerializeField] private TMP_Text txtPorcentajeMusica;
-    [SerializeField] private TMP_Text txtPorcentajeEfectos;
+    [SerializeField] private TextMeshProUGUI txtPorcentajeMaster;
+    [SerializeField] private TextMeshProUGUI txtPorcentajeMusica;
+    [SerializeField] private TextMeshProUGUI txtPorcentajeEfectos;
 
+
+    private const string PREVIOUS_SCENE_KEY = "PreviousScene"; 
     // -------------------------
     // Configuración inicial
     // -------------------------
@@ -61,10 +65,15 @@ public class UISettings : MonoBehaviour
         ActualizarPorcentaje(txtPorcentajeEfectos, valorLineal);
     }
 
-    private void ActualizarPorcentaje(TMP_Text texto, float valorLineal)
+    private void ActualizarPorcentaje(TextMeshProUGUI texto, float valorLineal)
     {
         if (texto == null) return;
         int porcentaje = Mathf.RoundToInt(valorLineal * 100f);
         texto.text = $"{porcentaje}%";
+    }
+
+    public void Back()
+    {
+        SceneManager.UnloadSceneAsync("Settings");
     }
 }

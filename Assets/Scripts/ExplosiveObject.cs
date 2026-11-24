@@ -10,6 +10,9 @@ public class ExplosiveObject : MonoBehaviour
     [SerializeField] ParticleSystem explosiveParticle;
 
     PlayerHealth playerHealth;
+    EnemyManager enemyManager;
+
+    int damageExplosive = 2;
 
     public void Detonate()
     {   
@@ -20,14 +23,25 @@ public class ExplosiveObject : MonoBehaviour
 
         foreach(Collider hit in playerCollider)
         {
+            
             if (hit != null)
             {
-                playerHealth = hit.GetComponent<PlayerHealth>();
-                break;
+                if (hit.CompareTag("Player"))
+                {
+                    playerHealth = hit.GetComponent<PlayerHealth>();
+                    break;
+                }
+                else if (hit.CompareTag("Enemy"))
+                {
+
+                    enemyManager = hit.GetComponent<EnemyManager>();
+                    enemyManager.TakeDamage(damageExplosive);
+                }
+                
             }
         }
 
-        if(playerHealth != null) playerHealth.LoseHealth();
+        if(playerHealth != null) playerHealth.LoseHealth(damageExplosive);
         
     }
 

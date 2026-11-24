@@ -51,14 +51,14 @@ public class CollisionManager : MonoBehaviour
     }
 
     void ManageEnemyCollision(Collision collision)
-    {
+    {   
+        enemyManager = collision.gameObject.GetComponent<EnemyManager>();
         if (playerMovement.IsDashing)
         {
             enemyManager.TakeDamage();
         }
         else
         {
-            enemyManager = collision.gameObject.GetComponent<EnemyManager>();
             playerHealth.LoseHealth(enemyManager.GetDamage());
         }
     }
@@ -69,7 +69,14 @@ public class CollisionManager : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other)
-    {   
+    {
+        if (other.CompareTag("Point"))
+        {
+            int currentScore = PlayerPrefs.GetInt("MaxScore") + 100;
+            PlayerPrefs.SetInt("MaxScore", currentScore);
+            Destroy(other.gameObject);
+        }
+
         if(other.CompareTag("Finish")) ManageCollision(landingAudioClip, landingParticleSystem);
 
         if(!other.CompareTag("Explosion")) return;

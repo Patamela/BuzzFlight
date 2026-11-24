@@ -11,6 +11,9 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private Color damageColor = new Color(1f, 0.25f, 0.25f);
     [SerializeField] private ParticleSystem deadParticle;
 
+    Vector3 spawnPoint;
+    PlayerShooting playerShooting;
+
     Renderer[] bodyRenderers;
     MaterialPropertyBlock tintBlock;
 
@@ -31,7 +34,7 @@ public class PlayerHealth : MonoBehaviour
     public int CurrentLives 
     {
         get { return currentLives; } 
-        set { if(currentLives > 3) currentLives = lives; else currentLives = value; }
+        set { if(currentLives > lives) currentLives = lives; else currentLives = value; }
     }
 
     public int MaxLives 
@@ -41,8 +44,10 @@ public class PlayerHealth : MonoBehaviour
 
     void Awake()
     {
+        playerShooting = GetComponent<PlayerShooting>();
+
         dead = false;
-        CurrentLives = lives;
+        CurrentLives = MaxLives;
         tintBlock = new MaterialPropertyBlock();
 
         Renderer[] renderers = GetComponentsInChildren<Renderer>(true);
@@ -56,6 +61,12 @@ public class PlayerHealth : MonoBehaviour
         }
 
         bodyRenderers = body.ToArray();
+        spawnPoint = transform.position;
+    }
+
+    public void SetSpawnPoint(Vector3 newSpawnpoint)
+    {
+        spawnPoint = newSpawnpoint;
     }
 
     public void LoseHealth(int damage = 1)
@@ -70,18 +81,18 @@ public class PlayerHealth : MonoBehaviour
             Invoke(nameof(GameOver),delay);
         }
         if(isVulnerable) StartCoroutine(Invulnerable());
-        
-        Debug.Log($"Vida Jugador: {CurrentLives}");
     }
 
     private void GameOver()
-    {
-        SceneManager.LoadScene("Level1");
+    {   
+        playerShooting.CurrentAmmo = playerShooting.MaxAmmo;
+        CurrentLives = MaxLives;
+        transform.position = spawnPoint;
     }
     
     public void RecoverHealth()
     {
-        CurrentLives = lives;
+        CurrentLives = MaxLives;
     }
 
     IEnumerator Invulnerable()
@@ -107,7 +118,7 @@ public class PlayerHealth : MonoBehaviour
 
         ClearTint();
 
-        if (currentLives <= 0) dead = true;
+        if (CurrentLives <= 0) dead = true;
 
         isVulnerable = true;
     }

@@ -3,6 +3,14 @@ using UnityEngine.SceneManagement;
 
 public class UIMainMenu : MonoBehaviour
 {
+
+    void Update()
+    {
+        Debug.Log(SceneManager.GetSceneByName("Settings").isLoaded);
+        if (SceneManager.GetSceneByName("Settings").isLoaded) gameObject.SetActive(false);
+        else gameObject.SetActive(true);
+    }
+
     public void PlayGame()
     {
         // Load the scene named "Levels" when the PlayGame method is called
@@ -23,8 +31,10 @@ public class UIMainMenu : MonoBehaviour
 
     public void Settings()
     {   
-        // Load the scene named "Settings" when the Settings methos is called
-        SceneManager.LoadScene("Settings");
+        // Load the scene named "Settings" when the Settings methos is calleds
+        SceneManager.LoadSceneAsync("Settings", LoadSceneMode.Additive);
+        
+        
     }
 
     public void SelectLevel(int level)
@@ -36,6 +46,6 @@ public class UIMainMenu : MonoBehaviour
     public void BackToMenu()
     {
         // Load the scene named "Menu" when the BackToMenu method is called
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene("MainMenu");
     }
 }

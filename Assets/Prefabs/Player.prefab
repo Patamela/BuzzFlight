@@ -7029,7 +7029,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82351b50a7b16524f832558895dcac3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  lives: 3
+  lives: 4
   invulnerableDuration: 1
   blinkInterval: 0.1
   damageColor: {r: 1, g: 0.25, b: 0.25, a: 1}
@@ -7202,7 +7202,7 @@ MonoBehaviour:
   rotationForce: 4
   dashDistance: 5
   dashDuration: 0.5
-  maxCooldown: 3
+  maxCooldown: 5
   thrustParticleSystem: {fileID: 2905651132295377997}
   thrustAudioClip: {fileID: 0}
 --- !u!114 &3577048243244497915
@@ -7249,7 +7249,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b82f655cef424341b68e4ceaccc362b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CollisionManager
-  explosionAudioClip: {fileID: 8300000, guid: aed2598a99f38da41af5107557e3b9b2, type: 3}
   landingAudioClip: {fileID: 8300000, guid: 03fec49d73da54246a69caa655bbf797, type: 3}
   landingParticleSystem: {fileID: 1855907843479886466}
 --- !u!82 &8540235480581429839
